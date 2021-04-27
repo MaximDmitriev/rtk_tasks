@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 import Card from '@material-ui/core/Card';
@@ -8,22 +9,26 @@ import { useStyles } from './style';
 
 export const MainPage = () => {
   const classes = useStyles();
+  const user = useSelector(state => state.user);
 
   return (
-    <Container maxWidth='lg' className={classes.container}>
-      <Toolbar disableGutters>
+    <>
+      <Toolbar className={classes.toolbar} disableGutters>
         <Typography variant='h6'>Главная страница</Typography>
       </Toolbar>
-      <Card className={classes.groupWrapper}>
-        <div className={classes.itemWrapper}>
-          <Typography className={classes.labelText}>Имя:</Typography>
-          <Typography className={classes.text}>Админ</Typography>
-        </div>
-        <div className={classes.itemWrapper}>
-          <Typography className={classes.labelText}>Фамилия:</Typography>
-          <Typography className={classes.text}>Тестов</Typography>
-        </div>
-      </Card>
-    </Container>
+      {user.token &&
+      <Container maxWidth='lg' className={classes.container}>
+        <Card className={classes.groupWrapper}>
+          <div className={classes.itemWrapper}>
+            <Typography className={classes.labelText}>Имя:</Typography>
+            <Typography className={classes.text}>{user.firstName}</Typography>
+          </div>
+          <div className={classes.itemWrapper}>
+            <Typography className={classes.labelText}>Фамилия:</Typography>
+            <Typography className={classes.text}>{user.lastName}</Typography>
+          </div>
+        </Card>
+      </Container>}
+    </>
   );
 };

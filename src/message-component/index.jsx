@@ -1,4 +1,6 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearMessage } from '../store/message-reducer';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
@@ -9,27 +11,23 @@ function Alert(props) {
 }
 
 export default function Message() {
-  const [open, setOpen] = React.useState(true);
-
-  const handleClick = () => {
-    setOpen(true);
-  };
+  const message = useSelector(state => state.message);
+  const dispatch = useDispatch();
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
-
-    setOpen(false);
+    dispatch(clearMessage());
   };
 
   return (
     <Snackbar
-      open={open}
-      // autoHideDuration={6000}
+      open={message.in}
+      autoHideDuration={6000}
       onClose={handleClose}>
-      <Alert onClose={handleClose} severity="error">
-        Ошибка авторизации. Неправильный логин
+      <Alert onClose={handleClose} severity={message.type || 'error'}>
+        {message.text}
       </Alert>
     </Snackbar>
   );
