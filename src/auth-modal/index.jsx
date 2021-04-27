@@ -5,19 +5,21 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { userLogin } from '../service/fetchData';
 
 import { useStyles } from './style';
 
 const renderTextField = ({
   label,
   input,
-  meta: { touched, invalid, error, active },
+  meta: { touched, invalid, error, active, submitting },
   ...custom
 }) => (
   <TextField
     label={label}
     error={touched && !active && invalid}
     helperText={touched && !active && error}
+    disabled={submitting}
     {...input}
     {...custom}
   />
@@ -25,11 +27,11 @@ const renderTextField = ({
 
 const validate = values => {
   const errors = {};
-  if (!values.login || values.login.length < 3) {
-    errors.login = 'Должен содержать не менее 3-х символов';
+  if (!values.userName || values.userName.length < 3) {
+    errors.userName = 'Должен содержать не менее 3-х символов';
   }
-  if (values.login && values.login.includes(' ')) {
-    errors.login = 'Не должен содержать пробелов';
+  if (values.userName && values.userName.includes(' ')) {
+    errors.userName = 'Не должен содержать пробелов';
   }
   if (!values.password) {
     errors.password = 'Обязательное поле';
@@ -38,7 +40,7 @@ const validate = values => {
 };
 
 const AuthModalComponent = (props) => {
-  const { handleSubmit } = props;
+  const { handleSubmit, submitting, pristine } = props;
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
 
@@ -51,7 +53,9 @@ const AuthModalComponent = (props) => {
   };
 
   const onHandleSubmit = values => {
-    console.log('submit', values);
+    return userLogin(values)
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
   };
 
   return (
@@ -74,8 +78,8 @@ const AuthModalComponent = (props) => {
           <form className={classes.form} onSubmit={handleSubmit(onHandleSubmit)}>
             <div className={classes.fieldsWrapper}>
               <Field
-                name="login"
-                id="login"
+                name="userName"
+                id="userName"
                 label="Логин"
                 className={classes.input}
                 variant="outlined"
@@ -91,7 +95,15 @@ const AuthModalComponent = (props) => {
                 component={renderTextField}
               />
             </div>
-            <Button className={classes.button} variant="contained" color="primary" type="submit">Войти</Button>
+            <Button
+              className={classes.button}
+              variant="contained"
+              color="primary"
+              type="submit"
+              disabled={pristine || submitting}
+            >
+              Войти
+            </Button>
           </form>
         </div>
       </Fade>
