@@ -12,8 +12,12 @@ export const useStyles = makeStyles(() => ({
     background: '#fff',
     padding: '10px 0 10px 10px',
   },
+  fieldsWrapper: {
+    paddingBottom: '35px',
+  },
   input: {
     marginRight: '10px',
+    width: '300px',
   },
   form: {
     display: 'flex',
