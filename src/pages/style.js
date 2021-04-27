@@ -7,6 +7,7 @@ export const useStyles = makeStyles(() => ({
     height: '100vh',
   },
   toolbar: {
+    justifyContent: 'space-between',
     backgroundColor: '#1976d2',
     padding: '0 25px',
     color: '#fff',

@@ -4,8 +4,6 @@ import { clearMessage } from '../store/message-reducer';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
-import { useStyles } from './style';
-
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }

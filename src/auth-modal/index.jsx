@@ -1,11 +1,12 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { userLogin } from '../service/fetchData';
+import { requestLogin } from '../actions';
 
 import { useStyles } from './style';
 
@@ -39,23 +40,14 @@ const validate = values => {
   return errors;
 };
 
-const AuthModalComponent = (props) => {
+const AuthModalComponent = props => {
   const { handleSubmit, submitting, pristine } = props;
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const dispatch = useDispatch();
+  const show = useSelector(state => !state.user.token);
 
   const onHandleSubmit = values => {
-    return userLogin(values)
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+    return dispatch(requestLogin(values));
   };
 
   return (
@@ -63,8 +55,7 @@ const AuthModalComponent = (props) => {
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       className={classes.modal}
-      open={open}
-      onClose={handleClose}
+      open={show}
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{
@@ -72,7 +63,7 @@ const AuthModalComponent = (props) => {
       }}
       disableBackdropClick
     >
-      <Fade in={open}>
+      <Fade in={show}>
         <div className={classes.paper}>
           <h3 id="transition-modal-title">Авторизация</h3>
           <form className={classes.form} onSubmit={handleSubmit(onHandleSubmit)}>

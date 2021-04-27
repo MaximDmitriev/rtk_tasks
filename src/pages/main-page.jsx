@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
+import { UserMenu } from '../user-menu-component';
+import { deleteCookies } from '../service/cookies';
 
 import { useStyles } from './style';
 
@@ -11,10 +13,15 @@ export const MainPage = () => {
   const classes = useStyles();
   const user = useSelector(state => state.user);
 
+  // useEffect(() => {
+  //   return () => deleteCookies('user');
+  // }, []);
+
   return (
     <>
       <Toolbar className={classes.toolbar} disableGutters>
         <Typography variant='h6'>Главная страница</Typography>
+        {user.token && <UserMenu />}
       </Toolbar>
       {user.token &&
       <Container maxWidth='lg' className={classes.container}>
