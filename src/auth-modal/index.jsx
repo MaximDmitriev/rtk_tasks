@@ -13,14 +13,14 @@ import { useStyles } from './style';
 const renderTextField = ({
   label,
   input,
-  meta: { touched, invalid, error, active, submitting },
+  meta: { touched, invalid, error, active },
   ...custom
 }) => (
   <TextField
     label={label}
     error={touched && !active && invalid}
     helperText={touched && !active && error}
-    disabled={submitting}
+    disabled={custom.loading}
     {...input}
     {...custom}
   />
@@ -41,10 +41,11 @@ const validate = values => {
 };
 
 const AuthModalComponent = props => {
-  const { handleSubmit, submitting, pristine } = props;
+  const { handleSubmit, pristine } = props;
   const classes = useStyles();
   const dispatch = useDispatch();
   const show = useSelector(state => !state.user.token);
+  const loading = useSelector(state => state.user.loading);
 
   const onHandleSubmit = values => {
     return dispatch(requestLogin(values));
@@ -75,6 +76,7 @@ const AuthModalComponent = props => {
                 className={classes.input}
                 variant="outlined"
                 component={renderTextField}
+                loading={loading}
               />
               <Field
                 name="password"
@@ -84,6 +86,7 @@ const AuthModalComponent = props => {
                 variant="outlined"
                 type="password"
                 component={renderTextField}
+                loading={loading}
               />
             </div>
             <Button
@@ -91,7 +94,7 @@ const AuthModalComponent = props => {
               variant="contained"
               color="primary"
               type="submit"
-              disabled={pristine || submitting}
+              disabled={pristine || loading}
             >
               Войти
             </Button>

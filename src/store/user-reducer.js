@@ -7,6 +7,7 @@ export const userSlice = createSlice({
     lastName: null,
     userName: null,
     token: null,
+    loading: false,
   },
   reducers: {
     logIn: (state, { payload }) => {
@@ -21,8 +22,11 @@ export const userSlice = createSlice({
       state.userName = null;
       state.token = null;
     },
+    setLoading: (state, { payload }) => {
+      state.loading = payload;
+    },
   },
 });
 
-export const { logIn, logOut } = userSlice.actions;
+export const { logIn, logOut, setLoading } = userSlice.actions;
 export default userSlice.reducer;

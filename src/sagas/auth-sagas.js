@@ -1,8 +1,8 @@
-import { all, fork, takeLatest, put, call } from 'redux-saga/effects';
+import { all, fork, takeLatest, put, call, delay } from 'redux-saga/effects';
 import { Auth } from '../actions/constants';
 import { userLogin } from '../service/fetchData';
 import { addMessage } from '../store/message-reducer';
-import { logIn } from '../store/user-reducer';
+import { logIn, setLoading } from '../store/user-reducer';
 import { setCookies } from '../service/cookies';
 
 function* loginRequestListener() {
@@ -10,6 +10,8 @@ function* loginRequestListener() {
 }
 
 function* loginRequestWorker({ payload }) {
+  yield put(setLoading(true));
+  // yield delay(3000); // для проварки условия блокировки формы
   const result = yield call(login, payload.body);
 
   if (result.error) {
@@ -18,6 +20,7 @@ function* loginRequestWorker({ payload }) {
     yield put(logIn(result));
     setCookies('user', JSON.stringify(result));
   }
+  yield put(setLoading(false));
 }
 
 export function* authRootSaga() {
