@@ -7,7 +7,7 @@ export const userSlice = createSlice({
     lastName: null,
     userName: null,
     token: null,
-    loading: false,
+    loading: 'idle', // | authorized | error | pending,
   },
   reducers: {
     logIn: (state, { payload }) => {
@@ -21,6 +21,7 @@ export const userSlice = createSlice({
       state.lastName = null;
       state.userName = null;
       state.token = null;
+      state.loading = 'idle';
     },
     setLoading: (state, { payload }) => {
       state.loading = payload;

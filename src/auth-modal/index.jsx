@@ -20,7 +20,7 @@ const renderTextField = ({
     label={label}
     error={touched && !active && invalid}
     helperText={touched && !active && error}
-    disabled={custom.loading}
+    disabled={custom.loading === 'pending'}
     {...input}
     {...custom}
   />
@@ -56,7 +56,7 @@ const AuthModalComponent = props => {
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       className={classes.modal}
-      open={show}
+      open={show && loading !== 'error'}
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{
@@ -64,7 +64,7 @@ const AuthModalComponent = props => {
       }}
       disableBackdropClick
     >
-      <Fade in={show}>
+      <Fade in={show && loading !== 'error'}>
         <div className={classes.paper}>
           <h3 id="transition-modal-title">Авторизация</h3>
           <form className={classes.form} onSubmit={handleSubmit(onHandleSubmit)}>
@@ -94,7 +94,7 @@ const AuthModalComponent = props => {
               variant="contained"
               color="primary"
               type="submit"
-              disabled={pristine || loading}
+              disabled={pristine || loading === 'pending'}
             >
               Войти
             </Button>

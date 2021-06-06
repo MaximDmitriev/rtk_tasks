@@ -5,10 +5,9 @@ import Popover from '@material-ui/core/Popover';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-import { logOut } from '../store/user-reducer';
+import { userLogout } from '../actions';
 
 import { useStyles } from './style';
-import { deleteCookies } from '../service/cookies';
 
 export const UserMenu = () => {
   const classes = useStyles();
@@ -22,8 +21,7 @@ export const UserMenu = () => {
     setAnchorEl(null);
   };
   const logOutHandler = () => {
-    deleteCookies('user');
-    dispatch(logOut());
+    dispatch(userLogout());
   };
   const open = Boolean(anchorEl);
   return (
