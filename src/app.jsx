@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { MainPage } from './pages/main-page';
+import MainPage from './pages/main-page';
 import { AuthModal } from './auth-modal';
 import Message from './message-component';
 import Container from '@material-ui/core/Container';
